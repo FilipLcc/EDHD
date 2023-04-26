@@ -1,0 +1,338 @@
+<html>
+    <head>
+        <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    </head>
+    <script>
+        function oboleli(){
+            let str="";
+           str+="<div class='row'>";
+           str+=" <div class='col-sm-12'>";
+            str+=  "<h2>"
+                str+=  " Statistika o broju obolelih od neke bolesti"
+                str+="</h2>"
+                str+="<hr>"
+                str+="</div>"
+                str+= "</div>"
+                str+= "<div class='row'>"
+                    str+=  "<div class='col-sm-2'>"
+                        str+="Izaberite kategoriju bolesti:"
+                        str+= "</div>"
+                        str+=  "<div class='col-sm-10'>"
+                            str+=  "<select id='bolesti'>"
+                                str+=  "<option></option>"
+                                str+= "<option>Zarazne i parazitarne bolesti</option>"
+                                str+=  "<option>Tumori</option>"
+                                str+=  "<option>Bolesti krvi i krvotvornih organa kao i poremećaji imuniteta</option>"
+                                str+=  "<option>Bolesti žlezda sa unutrašnjim lučenjem, ishrane i metabolizma</option>"
+                                str+= "<option>Duševni poremećaji i poremećaji ponašanja</option>"
+                                str+=  "<option>Bolesti nervnog sistema</option>"
+                                str+=  "<option>Bolesti oka i pripojaka oka</option>"
+                                str+="<option>Bolesti uva i mastoidnog nastavka</option>"
+                                str+= "<option>Bolesti sistema krvotoka</option>"
+                                str+=  "<option>Bolesti sistema za disanje</option>"
+                                str+=  "<option>Bolesti sistema za varenje</option>"
+                                str+=  "<option>Bolesti kože i potkožnog tkiva</option>"
+                                str+=  "<option>Bolesti mišićno-koštanog sistema i vezivnog tkiva</option>"
+                                str+=  "<option>Bolesti mokraćno – polnog sistema</option>"
+                                str+=  "<option>Trudnoća, rađanje i babinje</option>"
+                                str+=  "<option>Bolesti perinatalnog perioda</option>"
+                                str+=  "<option>Urođene malformacije, deformacije i hromozomske nenormalnosti</option>"
+                                str+=  "<option>Povrede, trovanja i ostale posledice spoljašnjih uzroka</option>"
+                                str+=   "<option>Simptomi, znaci i patološki klinički i laboratorijski nalazi, neklasifikovani na drugom mestu</option>"
+                                str+=   "<option>Spoljašnji uzroci obolevanja i umiranja</option>"
+                                str+=  "<option>Faktori koji utiču na stanje zdravlja i kontakt sa zdravstvenom službom</option>"
+                                str+=   "<option>Zarazne i parazitarne bolesti</option>"
+                                str+= "</select>"
+                                str+= "</div>"
+                                str+="</div>"
+                                str+="<div class='row'><div class='col-sm-12' align='center'><button class='btn btn-success' onclick='pretrazi()'>Pretrazi</button></div></div>";
+
+                                document.getElementById('prostor').innerHTML=str;
+                                $('#oboleli').addClass('active');
+                                $('#umrli').removeClass('active');
+                                $('#lekovi').removeClass('active');
+                                $('#alergije').removeClass('active');
+        }
+
+        var izabrano;
+        var zemlja;
+        var bolest;
+
+        function pretrazi(){
+            let str="";
+
+            izabrano=document.getElementById('bolesti').value;
+          //  alert(izabrano);
+          if(izabrano==""){
+              alert("Morate izabrati kategoriju bolesti po kojoj zelite da pregledate statistiku");
+              return;
+          }
+
+          if(izabrano=="Zarazne i parazitarne bolesti") {
+            str+= "<div class='row'>"
+            str+=  "<div class='col-sm-12'>"
+                str+=  "<h3>"
+                    str+=      "Popunite formu sa podacima"
+                    str+=    "</h3>"
+                    str+=  "</div>"
+                    str+= "</div>"    
+                    str+= "<div class='row'>"
+                        str+=  "<div class='col-sm-6'>"
+                            str+=     "Izaberite drzavu:"
+                            str+= "</div>"
+                            str+= "<div class='col-sm-6'>"
+                                str+=    "<select id='drzava'>"
+                                str+="<option></option>"
+                                    str+=      " <option>Srbija</option>"
+                                    str+=   "<option>Nemacka</option>"
+                                    str+=     "<option>Engleska</option>"
+                                    str+=    "<option>Spanija</option>"
+                                    str+=    "<option>Italija</option>"
+                                    str+=  "</select>"
+                                    str+=   "</div>"
+                                    str+=  "</div>"
+                                    str+="<br>"
+                                                    str+= "<div class='row'>"    
+                                                        str+=     "<div class='col-sm-6'>"
+                                                            str+=  "Izaberite konkretnu bolest:"
+                                                            str+= "</div>";
+                                                            str+=  "<div class='col-sm-6'>"
+                                                                str+=      "<select id='zaraza'>"
+                                                               str+="<option></option>"
+                                                                    str+=          "<option>Covid-19</option>"
+                                                                    str+=         "<option>Ebola</option>"
+                                                                    str+=        "<option>Pticji grip</option>"
+                                                                    str+=       "<option>Grip A</option>"
+                                                                    str+=       "<option>Grip B</option>"
+                                                                    str+=    "</select>"
+                                                                    str+= "</div>"
+                                                                    str+= "</div>"
+                                                                    str+="<br>"
+                                                                    str+="<div class='row'><div class='col-sm-12' align='center'><button class='btn btn-success' onclick='search()'>Pretrazi</button></div></div>"
+                                                                    $("#prostor").html(str);
+
+          }
+          else {
+            let str = "";
+                str+="<div class='row'><div class = 'col-sm-12 text-center'><img src='./images/work.png' alt=''><br><h4>Stranica je u izradi</h4></div></div>";
+                $("#prostor").html(str);
+
+          }
+
+           
+        }
+
+        function search(){
+            zemlja=document.getElementById('drzava').value;
+            bolest=document.getElementById('zaraza').value;
+           // alert(zemlja);
+           // alert(bolest);
+            if(zemlja=="" || bolest==""){
+                        alert("Morate izabrati zemlju i bolest po kojoj zelite da pregledate statistiku");
+                        return;
+                    }
+            if(zemlja == 'Srbija' && bolest == 'Covid-19') {
+                let str='';
+
+//    str+="<div class='row'><div class='col-sm-12'><h3>"+zemlja+"</h3></div></div>"
+    str+="<div class='row'><div class='col-sm-12'><h3>Podaci o "+bolest+" - "+zemlja+ "</h3></div></div>"
+
+   str+= "<div class='row'>"
+    str+=  "<div class='col-sm-6'>"
+        str+=     "Ukupan broj registrovanih slucajeva:"
+        str+=    "</div>"
+        str+=   "<div class='col-sm-6'>"
+            str+=        "14000"
+            str+=      "</div>"
+            str+=   "</div>"
+            str+=    "<br>"
+            str+=  "<div class='row'>"
+                str+=     "<div class='col-sm-6'>"
+                    str+=        "Broj smrtnih slucajeva"
+                    str+=    "</div>"
+                    str+=   "<div class='col-sm-6'>"
+                        str+=       "300"
+                        str+=    "</div>"
+                        str+=   "</div>"
+                        str+=  "<div class='row'>"
+                            str+=    "<div class='col-sm-6'>"
+                                str+=        "Procenat smrtnosti"
+                                str+=    "</div>"
+                                str+=    "<div class='col-sm-6'>"
+                                    str+=       "2%"
+                                    str+=   "</div>"
+                                    str+= "</div>"
+                                    str+=  "<div class='row'>"
+                            str+=    "<div class='col-sm-6'>"
+                                str+=        "Broj testiranih"
+                                str+=    "</div>"
+                                str+=    "<div class='col-sm-6'>"
+                                    str+=       "380 000"
+                                    str+=   "</div>"
+                                    str+= "</div>"
+                                $("#prostor").html(str);
+
+            }
+
+            else {
+                let str = "";
+                str+="<div class='row'><div class = 'col-sm-12 text-center'><img src='./images/work.png' alt=''><br><h4>Stranica je u izradi</h4></div></div>";
+                $("#prostor").html(str);
+            }
+
+
+         
+
+        }
+
+
+        function umrli(){
+            let str = "";
+                str+="<div class='row'><div class = 'col-sm-12 text-center'><img src='./images/work.png' alt=''><br><h4>Stranica je u izradi</h4></div></div>";
+                $("#prostor").html(str);
+            $('#oboleli').removeClass('active');
+                                $('#umrli').addClass('active');
+                                $('#lekovi').removeClass('active');
+                                $('#alergije').removeClass('active');
+
+        }
+
+        function lekovi(){
+            let str = "";
+                str+="<div class='row'><div class = 'col-sm-12 text-center'><img src='./images/work.png' alt=''><br><h4>Stranica je u izradi</h4></div></div>";
+                $("#prostor").html(str);
+            $('#oboleli').removeClass('active');
+                                $('#umrli').removeClass('active');
+                                $('#lekovi').addClass('active');
+                                $('#alergije').removeClass('active');
+
+        }
+
+        function alergije(){
+            let str = "";
+                str+="<div class='row'><div class = 'col-sm-12 text-center'><img src='./images/work.png' alt=''><br><h4>Stranica je u izradi</h4></div></div>";
+                $("#prostor").html(str);
+            $('#oboleli').removeClass('active');
+                                $('#umrli').removeClass('active');
+                                $('#lekovi').removeClass('active');
+                                $('#alergije').addClass('active');
+
+        }
+
+        function ucitaj(){
+            $('#prostor').html("<h3>Izaberite kategoriju sa leve strane po kojoj zelite da pretrazujete</h3>");
+        }
+
+
+    </script>
+    <body style="background-color: rgba(127, 162, 238, 0.712);" onload='ucitaj()'>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <br>
+                     <div class="list-group ">
+                      <a href="#" class="list-group-item list-group-item-action" id='oboleli' onclick='oboleli()'>Statistika o broju obolelih od neke bolesti</a>
+                      <a href="#" class="list-group-item list-group-item-action" id='umrli' onclick='umrli()'>Statistika o broju umrlih od neke bolesti</a>
+                      <a href="#" class="list-group-item list-group-item-action" id='lekovi' onclick='lekovi()'>Statistika o upotrebi medikamenata</a>
+                      <a href="#" class="list-group-item list-group-item-action" id='alergije' onclick='alergije()'>Statistika o alergijama</a>
+                     
+                      <!-- <a href="#" class="list-group-item list-group-item-action">Statistika o transplantaciji</a>
+                      <a href="#" class="list-group-item list-group-item-action">Hronicne bolesti</a>
+                      <a href="#" class="list-group-item list-group-item-action">Nasledne bolesti</a>
+                      <a href="#" class="list-group-item list-group-item-action">Navike</a>
+                       <a href="#" class="list-group-item list-group-item-action">Povrede</a> -->
+                      <!-- <a href="#" class="list-group-item list-group-item-action">Operacije</a>
+                      <a href="#" class="list-group-item list-group-item-action">Transplantacije</a>
+                      <a href="#" class="list-group-item list-group-item-action">Donacije</a> --> 
+                    </div> 
+                </div>
+                <div class="col-md-9">
+                    <br>
+                    <div class="card">
+                        <div class="card-body" id='prostor'>
+                            <!-- <div class="row">
+                                <div class="col-md-12">
+                                    <h4>Osnovni podaci o pacijentu</h4>
+                                    <hr>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <form>
+                                      <div class="form-group row">
+                                        <label for="username" class="col-4 col-form-label">Ime</label> 
+                                        <div class="col-8">
+                                          <input id="username" name="username" placeholder="Username" class="form-control here" required="required" type="text">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="name" class="col-4 col-form-label">Prezime</label> 
+                                        <div class="col-8">
+                                          <input id="name" name="name" placeholder="First Name" class="form-control here" type="text">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="lastname" class="col-4 col-form-label">E-mail</label> 
+                                        <div class="col-8">
+                                          <input id="lastname" name="lastname" placeholder="Last Name" class="form-control here" type="text">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="text" class="col-4 col-form-label">Pol</label> 
+                                        <div class="col-8">
+                                          <input id="text" name="text" placeholder="Nick Name" class="form-control here" required="required" type="text">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="email" class="col-4 col-form-label">Datum rodjenja</label> 
+                                        <div class="col-8">
+                                          <input id="email" name="email" placeholder="Email" class="form-control here" required="required" type="text">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="website" class="col-4 col-form-label">Adresa</label> 
+                                        <div class="col-8">
+                                          <input id="website" name="website" placeholder="website" class="form-control here" type="text">
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="publicinfo" class="col-4 col-form-label">Grad</label> 
+                                        <div class="col-8">
+                                          <textarea id="publicinfo" name="publicinfo" cols="40" rows="4" class="form-control"></textarea>
+                                        </div>
+                                      </div>
+                                      <div class="form-group row">
+                                        <label for="newpass" class="col-4 col-form-label">Drzava</label> 
+                                        <div class="col-8">
+                                          <input id="newpass" name="newpass" placeholder="New Password" class="form-control here" type="text">
+                                        </div>
+                                      </div> 
+                                      <div class="form-group row">
+                                        <label for="newpass" class="col-4 col-form-label">Zip code</label> 
+                                        <div class="col-8">
+                                          <input id="newpass" name="newpass" placeholder="New Password" class="form-control here" type="text">
+                                        </div>
+                                      </div> 
+                                     <div class="form-group row">
+                                        <div class="offset-4 col-8">
+                                          <button name="submit" type="submit" class="btn btn-primary">Update My Profile</button>
+                                        </div>
+                                      </div> 
+                                    </form>
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
+
+

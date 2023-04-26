@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Contact V15</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/bootstrap/css/bootstrap.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.7.0/css/font-awesome.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="fonts/Linearicons-Free-v1.0.0/icon-font.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animate/animate.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/css-hamburgers/hamburgers.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/animsition/css/animsition.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/select2/select2.min.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="vendor/daterangepicker/daterangepicker.css">
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<script>
+    function kartoni(){
+		let id = document.getElementById('idlek').value;
+		let pass = document.getElementById('siflek').value;
+
+		let lekari = JSON.parse(localStorage.getItem('lekari'));
+
+		
+		if(id=='') 
+			alert('Niste uneli identifikator!');
+			
+		
+		if(pass == '') 
+			alert('Niste uneli sifru!');
+		
+		if(pass=='' || id == '')
+			return;
+		let current = null;
+		for(let i=0; i<lekari.length; i++) {
+			if(lekari[i].id == id) {
+				current = lekari[i];
+				break;
+			}
+		}
+		if(current==null) {
+			alert('Ne postoji lekar sa unetim identifikatorom');
+			return;
+		}
+		if(current.sifra!=pass) {
+			alert('Uneli ste pogresno korisnicko ime ili sifru');
+			return;
+		}
+
+		localStorage.setItem('lekar', JSON.stringify(current));
+
+        window.open("lekar_kartoni.html");
+	}
+	function fillStorage() {
+		if(localStorage.getItem('pacijenti')==null) {
+			let pacijenti = [
+				{
+					ime:"Petar",
+					prezime:"Antic",
+					email:"pera123@gmail.com",
+					id:"1",
+					pol:"M",
+					sifra:'pera123',
+					datumRodjenja:'06-09-1998',
+					adresa:"Rastka Petrovica 59",
+					grad:"Beograd",
+					drzava:"Srbija",
+					zip:"11000",
+					istorija:[
+						{
+							naziv:"Grip A",
+							opis:"Opaka bolescina",
+							datum:"25.6.2020"
+
+						},
+						{
+							naziv:"Prehlada",
+							opis:"Opaka bolescina",
+							datum:"25.6.2020"
+
+						},
+						{
+							naziv:'Upala srednjeg uha',
+							opis:"Opaka bolescina",
+							datum:"25.6.2020"
+						}
+						
+					],
+					pregledi:[
+						{
+							naziv:'Sistematski pregled',
+							izvestaj:'Pregled tela',
+							datum:'20.5.2016.'
+						},
+						{
+							naziv:'Uroloski pregled',
+							izvestaj:'Muski pregled',
+							datum:'23.5.2019.'
+						},
+						{
+							naziv:'Pulmoloski pregled',
+							izvestaj:'Pregled pluca',
+							datum:'20.5.2016.'
+						},
+						{
+							naziv:'Kardioloski pregled',
+							izvestaj:'Pregled srcanih misica',
+							datum:'20.3.2020.'
+						}
+					],
+					krvna_grupa:"0",
+					vakcinacije_da: [
+						"Hepatitis A",
+						"Hepatitis B",
+						"Hepatitis C",
+						"TBC"
+					],
+					vakcinacije_ne: [
+						"Polio"
+					],
+					alergije:[
+						'Polen',
+						'Prasina',
+						'Ambrozija'
+					],
+					netolerantnosti:[
+						'Laktoza'
+					],
+					lekovi:[
+						'IBUPROFEN',
+						'ASPIRIN',
+						'SINACILIN',
+						'DIAZEPAM'
+					],
+					hronicne:[],
+					nasledne:['Dijabetes'],
+					navike:['Alkohol'],
+					povrede:[
+						{
+							naziv:'Fraktura lobanje',
+							datum:'23.6.2020',
+							opis:'Na 3 mesta'
+						}
+					],
+					operacije:['Hernia'],
+					donacije:[],
+					transplantacije:[]
+				},
+				{
+					ime:"Aleksandar",
+					prezime:"Sekerovic",
+					email:"seki123@gmail.com",
+					id:"2",
+					pol:"M",
+					sifra:'seki123',
+					datumRodjenja:'17-10-1999',
+					adresa:"Rastka Petrovica 68",
+					grad:"Beograd",
+					drzava:"Srbija",
+					zip:"11000",
+					istorija:[
+						{
+							naziv:"Grip B",
+							opis:"Opaka bolescina",
+							datum:"25.6.2020"
+
+						},
+						{
+							naziv:"Prehlada",
+							opis:"Opaka bolescina",
+							datum:"25.6.2020"
+
+						},
+						{
+							naziv:'Upala grla',
+							opis:"Opaka bolescina",
+							datum:"25.6.2020"
+						}
+						
+					],
+					pregledi:[
+						{
+							naziv:'Sistematski pregled',
+							izvestaj:'Pregled tela',
+							datum:'20.5.2016.'
+						},
+						{
+							naziv:'Uroloski pregled',
+							izvestaj:'Muski pregled',
+							datum:'23.5.2019.'
+						},
+						{
+							naziv:'Pulmoloski pregled',
+							izvestaj:'Pregled pluca',
+							datum:'20.5.2016.'
+						},
+						{
+							naziv:'Kardioloski pregled',
+							izvestaj:'Pregled srcanih misica',
+							datum:'20.3.2020.'
+						}
+					],
+					krvna_grupa:"AB",
+					vakcinacije_da: [
+						"Hepatitis A",
+						"TBC",
+						"Polio"
+					],
+					vakcinacije_ne: [
+					"Hepatitis B",
+						"Hepatitis C",
+					],
+					alergije:[
+						'Ambrozija'
+					],
+					netolerantnosti:[],
+					lekovi:[
+						'IBUPROFEN',
+						'ASPIRIN',
+						'SINACILIN'
+					],
+					hronicne:['Astma'],
+					nasledne:[],
+					navike:[],
+					povrede:[
+						{
+							naziv:'Fraktura kljucne kosti',
+							datum:'23.6.2014',
+							opis:'Na 3 mesta'
+						}
+					],
+					operacije:[],
+					donacije:[],
+					transplantacije:[]
+
+				}
+			];
+			
+			localStorage.setItem('pacijenti', JSON.stringify(pacijenti));
+		}
+		if(localStorage.getItem('lekari')==null) {
+			let lekari = [
+				{
+					ime:'Branimir',
+					prezime:'Nestorovic',
+					sifra:'smesanvirus',
+					spec:'bane',
+					id:'77'
+				},
+				{
+					ime:'Julius',
+					prezime:'Hibbert',
+					sifra:'bribe',
+					spec:'hihihi',
+					id:'5'
+				}
+			];
+			localStorage.setItem('lekari', JSON.stringify(lekari));
+		}
+	}
+
+</script>
+<body style="background-color: rgba(127, 162, 238, 0.712);" onload="fillStorage()">
+	<!-- <div> 
+		<nav style="background-color: brown;">
+			sss
+		</nav>
+	</div> -->
+
+
+	<div class="container-contact100">
+		<!--za div ispod class="contact100-map" id="google_map" data-map-x="40.722047" data-map-y="-73.986422" data-pin="images/icons/map-marker.png" data-scrollwhell="0" data-draggable="1"-->
+		
+
+		<div class="wrap-contact100">
+			<div class="contact100-form-title" style="background-image: url(images/who.jpg);">
+				<span class="contact100-form-title-1">
+					<!-- Prijavite se -->
+					<br>
+					
+				</span>
+
+				<span class="contact100-form-title-2">
+					<!-- Unesite svoje lične podatke -->
+					
+					<br>
+				</span>
+			</div>
+
+			<form class="contact100-form validate-form">
+				<div class="wrap-input100 validate-input" data-validate="Identifikator je obavezan!">
+					<span class="label-input100">ID lekara</span>
+					<input class="input100" type="text" name="name" placeholder="Unesite identifikacioni broj lekara" id = 'idlek'>
+					<span class="focus-input100"></span>
+				</div>
+			
+
+				<div class="wrap-input100 validate-input" data-validate = "Neophodna je ispravna sifra">
+					<span class="label-input100">Sifra</span>
+					<input class="input100" type="password" name="pass" placeholder="Unesite sifru" id="siflek">
+					<span class="focus-input100"></span>
+				</div>
+
+				<!-- <div class="wrap-input100 validate-input" data-validate="Phone is required">
+					<span class="label-input100">Phone:</span>
+					<input class="input100" type="text" name="phone" placeholder="Enter phone number">
+					<span class="focus-input100"></span>
+				</div>
+
+				<div class="wrap-input100 validate-input" data-validate = "Message is required">
+					<span class="label-input100">Message:</span>
+					<textarea class="input100" name="message" placeholder="Your Comment..."></textarea>
+					<span class="focus-input100"></span>
+				</div> -->
+
+				<div class="container-contact100-form-btn">
+					<button type="button" class="contact100-form-btn" onclick='kartoni()'>
+						<span>
+							Prijavite se
+							<i class="fa fa-long-arrow-right m-l-7" aria-hidden="true"></i>
+						</span>
+					</button>
+				</div>
+			</form>
+		</div>
+	</div>
+
+
+
+	<div id="dropDownSelect1"></div>
+
+<!--===============================================================================================-->
+	<script src="vendor/jquery/jquery-3.2.1.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/animsition/js/animsition.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/bootstrap/js/popper.js"></script>
+	<script src="vendor/bootstrap/js/bootstrap.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/select2/select2.min.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/daterangepicker/moment.min.js"></script>
+	<script src="vendor/daterangepicker/daterangepicker.js"></script>
+<!--===============================================================================================-->
+	<script src="vendor/countdowntime/countdowntime.js"></script>
+<!--===============================================================================================-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKFWBqlKAGCeS1rMVoaNlwyayu0e0YRes"></script>
+	<script src="js/map-custom.js"></script>
+<!--===============================================================================================-->
+	<script src="js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-23581568-13"></script>
+	<script>
+	  window.dataLayer = window.dataLayer || [];
+	  function gtag(){dataLayer.push(arguments);}
+	  gtag('js', new Date());
+
+	  gtag('config', 'UA-23581568-13');
+	</script>
+
+</body>
+</html>

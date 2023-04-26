@@ -1,0 +1,962 @@
+<html>
+    <head>
+        <!-- <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css"> -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+        <!-- <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script> -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0=" crossorigin="anonymous"></script>
+    </head>
+    <script>
+        var date;
+        function osnovni() {
+            pacijent=localStorage.getItem("karton");
+            pacijent=JSON.parse(pacijent);
+            let str = "";
+            str+= '<div class="row">';
+            str+= '<div class="col-md-12"> <h4>Osnovni podaci o pacijentu</h4> <hr> </div></div>';
+            str+='<div class="row"><div class="col-md-12"> <form><div class="form-group row"><label for="username" class="col-4 col-form-label">Ime</label>';
+            str+='<div class="col-8" id="ime">'+pacijent.ime+'</div></div> <div class="form-group row"> <label for="name" class="col-4 col-form-label">Prezime</label> ';
+            str+='<div class="col-8" id="prezime">'+pacijent.prezime+'</div></div><div class="form-group row">';
+            str+='<label for="lastname" class="col-4 col-form-label">E-mail</label><div class="col-8" id="email">';
+            str+='<input type = "text" id = "temail" placeholder = "'+pacijent.email+'"></div></div>';       
+            str+='<div class="form-group row"><label for="text" class="col-4 col-form-label">Pol</label><div class="col-8" id="pol">'+pacijent.pol+"</div></div>";
+            str+='<div class="form-group row"><label for="email" class="col-4 col-form-label">Datum rodjenja</label><div class="col-8" id="datum">'+pacijent.datumRodjenja+'</div></div>';
+            str+=' <div class="form-group row"><label for="website" class="col-4 col-form-label">Adresa</label><div class="col-8" id="adresa">';
+            str = str + '<input type = "text" id = "tadresa" placeholder = "'+ pacijent.adresa +'"></div></div><div class="form-group row"><label for="publicinfo" class="col-4 col-form-label">Grad</label>';
+            str+= '<div class="col-8" id="grad">'+'<input type = "text" id = "tgrad" placeholder = "'+pacijent.grad+'"></div></div>';
+            str+='<div class="form-group row"><label for="newpass" class="col-4 col-form-label">Drzava</label>';
+            str+='<div class="col-8" id="drzava"><input type = "text" id = "tdrzava" placeholder = "'+pacijent.drzava+'"></div></div>';
+            str+='<div class="form-group row"><label for="newpass" class="col-4 col-form-label">Zip code</label>';
+            str+='<div class="col-8" id="zip"><input type = "text" id = "tzip" placeholder = "'+pacijent.zip+'"></div></div>';
+            str+='<div class = "row"><div class = "col-8 text-right"><button type = "button" class = "btn btn-success" onclick = "sendOsnovni()">Potvrdi promene</button>';
+            str+='</form></div></div>';
+            document.getElementById('prostor').innerHTML = str;
+            $("#osn").addClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+
+        }
+
+        function ucitaj() {
+            osnovni();
+        }
+
+        function sendOsnovni() {
+            let key = JSON.parse(localStorage.getItem('karton')).id;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            let email = document.getElementById('temail').value;
+            let adresa = document.getElementById('tadresa').value;
+            let grad = document.getElementById('tgrad').value;
+            let drzava = document.getElementById('tdrzava').value;
+            let zip  = document.getElementById('tzip').value;
+            let dummy = {
+                email:'',
+                adresa:'',
+                grad:'',
+                drzava:'',
+                zip:''
+            }
+            if(email!='') 
+                dummy.email = email;
+            if(adresa!='') 
+                dummy.adresa = adresa;
+            if(grad!='')
+                dummy.grad = grad;
+            if(drzava!='') 
+                dummy.drzava = drzava;
+            if(zip!='')
+                dummy.zip = zip;
+            //pamtim duboku kopiju
+            let index = 0;
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            for(let i = 0; i<kartoni.length; i++) {
+                if(kartoni[i].id==key) {
+                    index = i;
+                    break;
+                }
+            }
+            if(dummy.email!='') {
+                kartoni[index].email = dummy.email;
+                karton.email = dummy.email;
+                $('#temail').attr('placeholder',dummy.email);
+                //$('#temail').attr('value','');
+            }
+               
+            if(dummy.adresa!='') {
+                kartoni[index].adresa = dummy.adresa;
+                karton.adresa = dummy.adresa;
+                $('#tadresa').attr('placeholder',dummy.adresa);
+                //$('#tadresa').attr('value','');
+            }
+           
+            if(dummy.grad!='') {
+                kartoni[index].grad = dummy.grad;
+                karton.grad = dummy.grad;
+                $('#tgrad').attr('placeholder',dummy.grad);
+               // $('#tgrad').attr('value','');
+            }
+            
+            if(dummy.drzava!='') {
+                kartoni[index].drzava = dummy.drzava;
+                karton.drzava = dummy.drzava;
+                $('#tdrzava').attr('placeholder',dummy.drzava);
+                //$('#tdrzava').attr('value','');
+            }
+            if(dummy.zip!='') {
+                kartoni[index].zip = dummy.zip;
+                karton.zip = dummy.zip;
+                $('#tzip').attr('placeholder',dummy.zip);
+                //$('#tzip').attr('value','');
+            }
+            
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            localStorage.setItem('karton', JSON.stringify(karton));
+
+            
+
+        }
+
+        function istorija() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Istorija bolesti i povreda</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-6' id = 'spisakb'> ";
+          for(let i=0;i<pacijent.istorija.length;i++) {
+              str+='<text style="cursor:pointer" id="b_'+i+'" onclick = "showMoreInfo(this)">'+pacijent.istorija[i].naziv+'</text><br>';
+          }
+          //b_
+          str+='</div>';
+          str+="<div class='col-md-6' id = 'spisakp'> ";
+           for(let i=0;i<pacijent.povrede.length;i++) {
+               str+='<text style="cursor:pointer" id="'+i+'" onclick = "showMore(this)">'+pacijent.povrede[i].naziv+'</text><br>';
+           }
+
+          //str=str+ pacijent.povrede.join("<br>");
+          str+="</div></div><br>";
+          //id = bol i id = povr
+          str+='<div class = "row"><div class = "col-sm-6 text-center"><br>';
+          str+='<button type = "button" class = "btn btn-success" onclick = "dodajBolest()">Dodajte oboljenje</button></div>';
+          str+='<div class = "col-sm-6 text-center"><br><button type = "button" class = "btn btn-success" onclick = "dodajPovredu()">Dodajte povredu</button></div></div>';
+
+          document.getElementById('prostor').innerHTML=str;
+          $("#osn").removeClass('active');
+            $("#ist").addClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+          
+        }
+
+        function showMoreInfo(input) {
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            let id = input.id.toString();
+            id = id.split('_');
+            id = id[1];
+            id = parseInt(id);
+            //naziv opis datum
+            let str = '<div class="row"><div class="col-sm-12"><h4>Dijagnoza</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.istorija[id].naziv+'</div></div>';
+            str+='<div class="row"><div class="col-sm-12"><h4>Opis</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.istorija[id].opis+'</div></div>';
+            str+='<div class="row"><div class="col-sm-12"><h4>Datum postavljanja dijagnoze</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.istorija[id].datum+'</div></div>';
+            document.getElementById('prostor').innerHTML = str;
+        }
+
+        function showMore(input) {
+            
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            //naziv opis datum
+            let str = '<div class="row"><div class="col-sm-12"><h4>Dijagnoza</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.povrede[input.id].naziv+'</div></div>';
+            str+='<div class="row"><div class="col-sm-12"><h4>Opis</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.povrede[input.id].opis+'</div></div>';
+            str+='<div class="row"><div class="col-sm-12"><h4>Datum postavljanja dijagnoze</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.povrede[input.id].datum+'</div></div>';
+            document.getElementById('prostor').innerHTML = str;
+
+        }
+
+        function dodajBolest() {
+            //prostor
+            let str = '';
+            //datum dijagnoza opis
+            date = new Date();
+            str+='<div class = "row"><div class = "col-sm-12">';
+            str+="<h4>Dijagnoza</h4></div></div><br><div class='row'><div class = 'col-sm-12'><input type = 'text' id = 'dijag' placeholder = 'Unesite dijagnozu'></div></div><br>";
+            str+='<div class = "row"><div class = "col-sm-6"><h4>Opis simptoma</h4></div></div><br><div class = "row"><div class = "col-sm-12">';
+            str+='<textarea style = "resize:none" draggable="false" id = "opis" cols="70" rows = "8" placeholder = "Unesite simptome"></textarea></div></div><br>';
+            let day = date.getDate();
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            str+='<div class = "row"><div class = "col-sm-6"><h4>Datum</h4></div><div class = "col-sm-6">'+day.toString()+'.'+(month+1)+'.'+year.toString()+'.</div></div><br>';
+            str+='<div class = "row"><div class = "col-sm-12 text-center">';
+            str+='<button type="button" class = "btn btn-success" onclick="confBolest(date)">Potvrdite unos</button>';
+            str+='</div></div>';
+            document.getElementById('prostor').innerHTML = str;
+
+
+        }
+
+        function confBolest(date) {
+            //opis dijag date=pravi datum
+            let dijag = document.getElementById('dijag').value;
+            let opis = document.getElementById('opis').value;
+            if(opis==''||dijag=='') 
+                return;
+            let bolest = {
+                naziv:'',
+                opis:'',
+                datum:''
+            }
+            bolest.naziv = dijag;
+            bolest.opis = opis;
+            bolest.datum = ''+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'.';
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.istorija.push(bolest);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].istorija.push(bolest);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            
+            istorija();
+        }
+
+        function dodajPovredu() {
+            //prostor inj
+            let str = '';
+            //datum dijagnoza opis
+            date = new Date();
+            str+='<div class = "row"><div class = "col-sm-12">';
+            str+="<h4>Dijagnoza</h4></div></div><br><div class='row'><div class = 'col-sm-12'><input type = 'text' id = 'inj' placeholder = 'Unesite dijagnozu'></div></div><br>";
+            str+='<div class = "row"><div class = "col-sm-6"><h4>Opis povrede</h4></div></div><br><div class = "row"><div class = "col-sm-12">';
+            str+='<textarea style = "resize:none" draggable="false" id = "opis" cols="70" rows = "8" placeholder = "Unesite detalje o povredi"></textarea></div></div><br>';
+            let day = date.getDate();
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            str+='<div class = "row"><div class = "col-sm-6"><h4>Datum</h4></div><div class = "col-sm-6">'+day.toString()+'.'+(month+1)+'.'+year.toString()+'.</div></div><br>';
+            str+='<div class = "row"><div class = "col-sm-12 text-center">';
+            str+='<button type="button" class = "btn btn-success" onclick="confPovredu(date)">Potvrdite unos</button>';
+            str+='</div></div>';
+            document.getElementById('prostor').innerHTML = str;
+
+        }
+        function confPovredu() {
+            let dijag = document.getElementById('inj').value;
+            let opis = document.getElementById('opis').value;
+            if(opis==''||dijag=='') 
+                return;
+            let povreda = {
+                naziv:'',
+                opis:'',
+                datum:''
+            }
+            povreda.naziv = dijag;
+            povreda.opis = opis;
+            povreda.datum = ''+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'.';
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.povrede.push(povreda);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].povrede.push(povreda);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            istorija();
+
+            //////////////////////////////
+        }
+        //prg
+
+        function pregledi() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Pregledi</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id = 'spisak'> ";
+            for(let i=0;i<pacijent.pregledi.length;i++) {
+               str+='<text style="cursor:pointer" id="'+i+'" onclick = "oPregledu(this)">'+pacijent.pregledi[i].naziv+'</text><br>';
+           }
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12 text-center'>";
+          str+="<br><button type = 'button' onclick='dodajPregled()' class = 'btn btn-success'>Upisite obavljen pregled</button>";
+          document.getElementById('prostor').innerHTML=str;
+          $("#preg").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+        }
+        function dodajPregled() {          
+            let str = '';
+            date = new Date();
+            str+='<div class = "row"><div class = "col-sm-12">';
+            str+="<h4>Vrsta pregleda</h4></div></div><br><div class='row'><div class = 'col-sm-12'><input type = 'text' id = 'prg' placeholder = 'Unesite dijagnozu'></div></div><br>";
+            str+='<div class = "row"><div class = "col-sm-6"><h4>Izvestaj s pregleda</h4></div></div><br><div class = "row"><div class = "col-sm-12">';
+            str+='<textarea style = "resize:none" draggable="false" id = "opis" cols="70" rows = "8" placeholder = "Unesite detalje s pregleda"></textarea></div></div><br>';
+            let day = date.getDate();
+            let year = date.getFullYear();
+            let month = date.getMonth();
+            str+='<div class = "row"><div class = "col-sm-6"><h4>Datum</h4></div><div class = "col-sm-6">'+day.toString()+'.'+(month+1)+'.'+year.toString()+'.</div></div><br>';
+            str+='<div class = "row"><div class = "col-sm-12 text-center">';
+            str+='<button type="button" class = "btn btn-success" onclick="confPregled(date)">Potvrdite unos</button>';
+            str+='</div></div>';
+            document.getElementById('prostor').innerHTML = str;
+
+        }
+
+        function confPregled() {
+            let prg = document.getElementById('prg').value;
+            let opis = document.getElementById('opis').value;
+            if(opis==''||prg=='') 
+                return;
+            let pregled = {
+                naziv:'',
+                izvestaj:'',
+                datum:''
+            }
+            pregled.naziv = prg;
+            pregled.izvestaj = opis;
+            pregled.datum = ''+date.getDate()+'.'+(date.getMonth()+1)+'.'+date.getFullYear()+'.';
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.pregledi.push(pregled);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].pregledi.push(pregled);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            pregledi();
+        }
+
+        function oPregledu(input) {
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            //naziv opis datum
+            let str = '<div class="row"><div class="col-sm-12"><h4>Dijagnoza</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.pregledi[input.id].naziv+'</div></div>';
+            str+='<div class="row"><div class="col-sm-12"><h4>Opis</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.pregledi[input.id].izvestaj+'</div></div>';
+            str+='<div class="row"><div class="col-sm-12"><h4>Datum postavljanja dijagnoze</h4></div></div>';
+            str +='<div class="row"><div class="col-sm-12">'+karton.pregledi[input.id].datum+'</div></div>';
+            document.getElementById('prostor').innerHTML = str;
+        }
+
+        function krvna_grupa() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Krvna grupa</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12'> ";
+          str = str + pacijent.krvna_grupa;
+          str+="</div></div>";
+          document.getElementById('prostor').innerHTML=str;
+          $("#kg").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+        }
+
+        function vakcinacija() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Vakcinacija</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12'> <h5>Obavljene vakcinacije</h5><p id = 'done'>";
+          str = str + pacijent.vakcinacije_da.join("<br>");
+          str+="</p><h5>Neobavljene vakcinacije</h5><div id = 'not'>";
+          str=str+ pacijent.vakcinacije_ne.join("<br>");
+          str+="</div></div></div>";
+          str+="<div class='row'><div class='col-md-12 text-center'>";
+          str+="<input type = 'text' id = 'vcc'><br><br><button type = 'button' class='btn btn-success' onclick = 'dodajVakcinu()'>Zabelezite vakcinaciju</button>";
+          document.getElementById('prostor').innerHTML=str;
+          $("#vak").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+        }
+
+        function dodajVakcinu() {
+            let vakcina = document.getElementById('vcc').value;
+            if(vakcina == '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let flag = false;
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    for(let j=0;j<kartoni[i].vakcinacije_ne.length;j++) {
+                        if(kartoni[i].vakcinacije_ne[j]==vakcina) {
+                            flag = true;
+                            kartoni[i].vakcinacije_ne.splice(j,1);
+                            karton.vakcinacije_ne.splice(j,1);
+                            break;
+                        }
+                    }
+                }  
+            }
+            karton.vakcinacije_da.push(vakcina);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            kartoni[index].vakcinacije_da.push(vakcina);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+
+            if(flag) {           
+                $('#not').empty();
+                let str = pacijent.vakcinacije_ne.join("<br>");
+                $('#not').html = str;
+            }
+            $('#done').append("<br>"+vakcina);
+            for (let i = 0; i<karton.vakcinacije_ne.length; i++) {
+                $('#not').append("<br>"+karton.vakcinacije_ne[i]);
+            }
+        }
+
+
+        function alergije() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Alergije</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id = 'spisak'> ";
+          str = str + pacijent.alergije.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'al'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajAlergiju()'>Dodajte alergiju</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#alrg").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+           
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+
+        }
+
+        function dodajAlergiju() {
+            let al = document.getElementById('al').value;
+            if(al == '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.alergije.push(al);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].alergije.push(al);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+al);
+
+        }
+
+        function netolerantnosti() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Netolerantnosti</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id = 'spisak'> ";
+          str = str + pacijent.netolerantnosti.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'ntl'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajNeto()'>Dodajte netolerantnost</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#net").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+           
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+        }
+
+        function dodajNeto() {
+            let ntl = document.getElementById('ntl').value;
+            if(ntl == '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.netolerantnosti.push(ntl);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].netolerantnosti.push(ntl);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+ntl);
+
+        }
+
+        function lekovi() {
+            let pacijent = JSON.parse(localStorage.getItem('karton'));
+         let str="<div class='row'><div class='col-md-12'><h4>Lekovi</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id='spisak'> ";
+          str = str + pacijent.lekovi.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<select id = 'drugs'>";
+          str+="<option></option>";
+          str+="<option>IBUPROFEN</option>";
+          str+="<option>ASPIRIN</option>";
+          str+="<option>SINACILIN</option>";
+          str+="<option>DIAZEPAM</option>";
+          str+="<option>ORVAGIL</option>";
+          str+="<option>RANISAN</option>";
+          str+="<option>FLONIVIN</option>";
+          str+="<option>TAMIFLU</option>";
+          str+="<option>ANDOL</option>";
+          str+="<option>PROSTAMOL UNO</option>";
+          str+="<option>PROBIOTIC</option>";
+          str+="</select>";
+          str+="<br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajLek()'>Dopisite koriscene medikamente</button> ";
+          str+='</div></div>'
+          document.getElementById('prostor').innerHTML=str;
+          $("#lek").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+           
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+
+        }
+
+        function dodajLek() {
+            let drugs = document.getElementById('drugs').value;
+            if(drugs== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.lekovi.push(drugs);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].lekovi.push(drugs);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+drugs);
+        }
+
+        function hronicne() {
+            let pacijent = JSON.parse(localStorage.getItem('karton'));
+            let str="<div class='row'><div class='col-md-12'><h4>Hronicne bolesti</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id='spisak'> ";
+          str = str + pacijent.hronicne.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'hr'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajHr()'>Dopisite hronicno oboljenje</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#hron").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+           
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+        }
+
+        function dodajHr() {
+            let hr = document.getElementById('hr').value;
+            if(hr== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.hronicne.push(hr);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].hronicne.push(hr);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+hr);
+        }
+
+        function nasledne() {
+            let pacijent = JSON.parse(localStorage.getItem('karton'));
+            let str="<div class='row'><div class='col-md-12'><h4>Nasledne bolesti</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id = 'spisak'> ";
+          str = str + pacijent.nasledne.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'nasledjene'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajNaslednu()'>Dopisite nasledno oboljenje</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#nasl").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+           
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+
+        }
+        function dodajNaslednu() {
+            let nasl = document.getElementById('nasledjene').value;
+            if(nasl== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.nasledne.push(nasl);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].nasledne.push(nasl);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+nasl);
+        }
+        
+        function navike() {
+            let pacijent = JSON.parse(localStorage.getItem('karton'));
+            let str="<div class='row'><div class='col-md-12'><h4>Navike</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id='spisak'> ";
+          str = str + pacijent.navike.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'habits'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajNaviku()'>Dopisite naviku pacijenta</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#nav").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+           
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+
+        }
+
+        function dodajNaviku() {
+            let navika = document.getElementById('habits').value;
+            if(navika== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.navike.push(navika);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].navike.push(navika);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+navika);
+
+        }
+
+        function operacije() {
+            let pacijent = JSON.parse(localStorage.getItem('karton'));
+            let str="<div class='row'><div class='col-md-12'><h4>Operacije</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id='spisak'> ";
+          str = str + pacijent.operacije.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'opr'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajOperaciju()'>Dopisite obavljenu operaciju</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+            $("#op").addClass('active');
+            $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            
+            $("#trans").removeClass('active');
+            $("#don").removeClass('active');
+        }
+        function dodajOperaciju() {
+            let opr = document.getElementById('opr').value;
+            if(opr== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.operacije.push(opr);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].operacije.push(opr);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+opr);
+
+        }
+
+        function trans() {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Transplantacije</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id='spisak'> ";
+          str = str + pacijent.transplantacije.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'tr'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajTransplantaciju()'>Dopisite obavljenu transplantaciju</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#trans").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+           
+            $("#don").removeClass('active');
+        }
+
+        function dodajTransplantaciju() {
+            let tr = document.getElementById('tr').value;
+            if(tr== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.transplantacije.push(tr);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].transplantacije.push(tr);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+tr);
+        }
+
+        function donacije () {
+          let pacijent = JSON.parse(localStorage.getItem('karton'));
+          let str="<div class='row'><div class='col-md-12'><h4>Donacije</h4><hr></div></div>";
+          str+=" <div class='row'><div class='col-md-12' id='spisak'> ";
+          str = str + pacijent.donacije.join("<br>");
+          str+="</div></div>";
+          str+="<div class='row'><div class='col-md-12'>";
+          str+="<input type ='text' id = 'donac'><br><br><button type = 'button' class = 'btn btn-success' onclick = 'dodajDonaciju()'>Dopisite donaciju</button> ";
+          str+='</div></div>';
+          document.getElementById('prostor').innerHTML=str;
+          $("#don").addClass('active');
+          $("#osn").removeClass('active');
+            $("#ist").removeClass('active');
+            $("#preg").removeClass('active');
+            $("#kg").removeClass('active');
+            $("#vak").removeClass('active');
+            $("#alrg").removeClass('active');
+            $("#net").removeClass('active');
+            $("#lek").removeClass('active');
+            $("#hron").removeClass('active');
+            $("#nasl").removeClass('active');
+            $("#nav").removeClass('active');
+            $("#op").removeClass('active');
+            $("#trans").removeClass('active');
+
+        }
+
+        function dodajDonaciju() {
+            let donation = document.getElementById('donac').value;
+            if(donation== '')
+                return;
+            let karton = JSON.parse(localStorage.getItem('karton'));
+            karton.donacije.push(donation);
+            localStorage.setItem('karton', JSON.stringify(karton));
+            let kartoni = JSON.parse(localStorage.getItem('pacijenti'));
+            let index = 0;
+            for(let i=0; i<kartoni.length;i++) {
+                if(kartoni[i].id==karton.id) {
+                    index = i;
+                    break;
+                }
+            }
+            kartoni[index].donacije.push(donation);
+            localStorage.setItem('pacijenti', JSON.stringify(kartoni));
+            $('#spisak').append("<br>"+donation);
+
+        }
+
+
+
+    </script>
+    <body style="background-color: rgba(127, 162, 238, 0.712);" onload="ucitaj()">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 ">
+                    <br>
+                     <div class="list-group ">
+                      <a href="#" class="list-group-item list-group-item-action" onclick="osnovni()" id = "osn">Osnovni podaci</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="istorija()"  id = "ist">Istorija bolesti i povreda</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="pregledi()" id = "preg">Pregledi</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="krvna_grupa()" id = "kg">Krvna grupa</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="vakcinacija()" id = "vak">Vakcinacija</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="alergije()" id = "alrg">Alergije</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="netolerantnosti()" id = "net">Netolerantnosti</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="lekovi()" id = "lek">Lekovi</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="hronicne()" id = "hron">Hronicne bolesti</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="nasledne()" id = "nasl">Nasledne bolesti</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="navike()" id = "nav">Navike</a>
+                      <!-- <a href="#" class="list-group-item list-group-item-action">Povrede</a> -->
+                      <a href="#" class="list-group-item list-group-item-action" onclick="operacije()" id = "op">Operacije</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="trans()" id = "trans">Transplantacije</a>
+                      <a href="#" class="list-group-item list-group-item-action" onclick="donacije()" id = "don">Donacije</a>
+                    </div> 
+                </div>
+                <div class="col-md-9">
+                    <br>
+                    <div class="card">
+                        <div class="card-body" id = 'prostor'>
+                         
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    </body>
+</html>
+
+
